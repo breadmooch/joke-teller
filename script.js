@@ -1,38 +1,58 @@
 const button = document.getElementById('button');
 const audioElement = document.getElementById('audio');
 
-// API key 15e3279510e84449a5f9dcb9864a58b9
-//Passes Joke to VoiceRSS API
+// Disable/Enable Button
+function toggleButton() {
+  button.disabled = !button.disabled;
+}
+
+// VoiceRSS Speech Function
 function tellMe(joke) {
-    VoiceRSS.speech({
-        key: '15e3279510e84449a5f9dcb9864a58b9',
-        src: joke,
-        hl: 'en-us',
-        v: 'Linda',
-        r: 0, 
-        c: 'mp3',
-        f: '44khz_16bit_stereo',
-        ssml: false
-    });
+  const jokeString = joke.trim().replace(/ /g, '%20');
+  // VoiceRSS Speech Parameters
+  VoiceRSS.speech({
+    // Normally, don't write out API Keys like this, but an exception made here because it's free.
+    key: '15e3279510e84449a5f9dcb9864a58b9',
+    src: jokeString,
+    hl: 'en-us',
+    r: 0,
+    c: 'mp3',
+    f: '44khz_16bit_stereo',
+    ssml: false,
+  });
 }
 
-//Get Jokes From Joke API
+// Get jokes from Joke API
 async function getJokes() {
-    let joke ='';
-    const apiUrl = 'https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit';
-    try {
-       const response = await fetch(apiUrl);
-       const data = await response.json();
-       if (data.setup) {
-         joke = `${data.setup} ... ${data.delivery}`;
-       } else {
-          joke = data.joke;
-       }
-       tellMe(joke);
-    } catch (error) {
-       // Catch Errors Here
-       console.log('whoops', error)
+  let joke = '';
+  const apiUrl = 'https://sv443.net/jokeapi/v2/joke/Programming?blacklistFlags=nsfw,racist,sexist';
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    // Assign One or Two Part Joke
+    if (data.setup) {
+      joke = `${data.setup} ... ${data.delivery}`;
+    } else {
+      joke = data.joke;
     }
+    // Passing Joke to VoiceRSS API
+    tellMe(joke);
+    // Disable Button
+    toggleButton();
+  } catch (error) {
+    // Catch Error Here
+  }
 }
 
-getJokes()
+// Event Listeners
+button.addEventListener('click', getJokes);
+audioElement.addEventListener('ended', toggleButton);
+
+const button = document.getElementById('button');
+const audioElement = document.getElementById('audio');
+
+//Disable/Enable Button
+function toggleButton() {
+    button.disabled = !button.disabled;
+}
+
