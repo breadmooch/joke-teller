@@ -1,3 +1,6 @@
+const button = document.getElementById('button');
+const audioElement = document.getElementById('audio');
+
 // Disable/Enable Button
 function toggleButton() {
   button.disabled = !button.disabled;
@@ -8,8 +11,7 @@ function tellMe(joke) {
   const jokeString = joke.trim().replace(/ /g, '%20');
   // VoiceRSS Speech Parameters
   VoiceRSS.speech({
-    // Normally, don't write out API Keys like this, but an exception made here because it's free.
-    key: '15e3279510e84449a5f9dcb9864a58b9',
+    key: '0afd78fd71874125b52244c8b857b754',
     src: jokeString,
     hl: 'en-us',
     r: 0,
@@ -45,11 +47,4 @@ async function getJokes() {
 button.addEventListener('click', getJokes);
 audioElement.addEventListener('ended', toggleButton);
 
-const button = document.getElementById('button');
-const audioElement = document.getElementById('audio');
-
-//Disable/Enable Button
-function toggleButton() {
-    button.disabled = !button.disabled;
-}
 
